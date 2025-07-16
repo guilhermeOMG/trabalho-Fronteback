@@ -1,0 +1,100 @@
+
+DROP database gerenciamento_produtos;
+
+-- Criação do banco de dados (se ainda não existir)
+CREATE DATABASE IF NOT EXISTS gerenciamento_produtos;
+
+-- Usar o banco de dados
+USE gerenciamento_produtos;
+
+-- Tabela: categorias
+CREATE TABLE categorias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL UNIQUE
+);
+
+
+
+
+-- Tabela: fornecedores
+CREATE TABLE fornecedores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    contato VARCHAR(255), 
+    avaliacao DECIMAL(1,2)
+);
+
+-- Tabela: produtos
+CREATE TABLE produtos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    descricao TEXT,
+    preco DECIMAL(10, 2) NOT NULL,
+    quantidade_estoque INT NOT NULL,
+    id_categoria INT,
+    id_fornecedor INT,
+    FOREIGN KEY (id_categoria) REFERENCES categorias(id) ON DELETE SET NULL,
+    FOREIGN KEY (id_fornecedor) REFERENCES fornecedores(id) ON DELETE SET NULL
+);
+
+-- Tabela: clientes
+CREATE TABLE clientes (
+id INT auto_increment primary KEY,
+nome varchar(255) NOT NULL,
+cpf varchar(14) not null unique,
+email varchar(255),
+endereco TEXT,
+segenero ENUM ('M', 'F', 'Outro') default'Outro'
+);
+
+-- Tabela: vendedores
+CREATE TABLE vendedores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    cpf VARCHAR(14) NOT NULL UNIQUE,
+    email VARCHAR(255),
+    senha varchar(255),
+    genero ENUM('M', 'F', 'Outro') DEFAULT 'Outro'
+);
+
+-- Inserção de dados de exemplo na tabela vendedores
+INSERT INTO vendedores (nome, cpf, email, senha,  genero) VALUES
+('Mariana Costa', '321.654.987-00', 'mariana.costa@empresa.com', '12345678', 'F'),
+('João Ferreira', '456.789.123-11', 'joao.ferreira@empresa.com', '12345677', 'M'),
+('Lucas Silva', '789.123.456-22', 'lucas.silva@empresa.com', '12341234', 'M'),
+('Beatriz Mendes', '159.753.486-33', 'beatriz.mendes@empresa.com', '87654321', 'F');
+
+
+-- Inserção de dados de exemplo na tabela clientes
+INSERT INTO clientes (nome, cpf, email, endereco, segenero) VALUES 
+('Jonny', '123.456.789-01', 'jonnybravo123@gmail.com','Rua Linguiça Mensais, 914, Bem te vi, Xique Xique, Bahia', 'M'),
+('Lucca', '123.456.789-02', 'luccabravo123@gmail.com','Rua Boboleta Psicodélicas, 570, Liberdade, São Paulo, São Paulo', 'M'),
+('Ashley', '123.456.789-03', 'ashleybrava123@gmail.com','Rua Travessa Maravilha Tristeza, 2506, Liberdade, São Paulo, São Paulo', 'F'),
+('Riley', '123.456.789-04', 'rileybrave123@gmail.com','Rua Travessa Sonho de um Carnaval, 1421, Tatuapé, São Paulo, São Paulo', '');
+
+
+
+-- Inserção de dados de exemplo na tabela categorias
+INSERT INTO categorias (nome) VALUES
+('Eletrônicos'),
+('Roupas'),
+('Alimentos'),
+('Livros');
+
+-- Inserção de dados de exemplo na tabela fornecedores
+INSERT INTO fornecedores (nome, contato, avaliacao) VALUES
+('Tech Supplies Ltda.', 'contato@techsupplies.com', 4.2),
+('Fashion Wear S.A.', 'vendas@fashionwear.com', 2.6),
+('Food Distributors Inc.', 'info@fooddist.com', 5.0),
+('Book Haven Editora', 'editora@bookhaven.com', 3.5);
+
+-- Inserção de dados de exemplo na tabela produtos 
+INSERT INTO produtos (nome, descricao, preco, quantidade_estoque, id_categoria, id_fornecedor) VALUES
+('Smartphone X', 'Última geração de smartphones com câmera de alta resolução.', 1200.00, 50, 1, 1),
+('Camiseta Algodão', 'Camiseta 100% algodão, confortável e durável.', 45.90, 200, 2, 2),
+('Arroz Integral 1kg', 'Arroz integral orgânico, pacote de 1kg.', 12.50, 300, 3, 3),
+('O Guia do Mochileiro das Galáxias', 'Livro clássico de ficção científica.', 35.00, 100, 4, 4),
+('Notebook Gamer', 'Notebook de alta performance para jogos.', 3500.00, 20, 1, 1),
+('Calça Jeans Slim Fit', 'Calça jeans masculina com corte slim fit.', 99.90, 150, 2, 2),
+('Feijão Carioca 1kg', 'Feijão carioca selecionado, pacote de 1kg.', 8.75, 250, 3, 3),
+('1984', 'Distopia clássica de George Orwell.', 28.00, 120, 4, 4);
